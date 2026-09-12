@@ -479,3 +479,18 @@ Describe 'SKILL.md -- Unity Hub adoption + host scope (ticket #47 / R7, rewritte
         $global:skillmd_text | Should Match '### Status-dir isolation contract'
     }
 }
+
+# --- ticket #54: cross-reference to the new unity-xr-sim skill -------------
+
+Describe 'SKILL.md -- cross-references unity-xr-sim; frontmatter stays XR-free (ticket #54)' {
+    $section     = Get-Section -Text $global:skillmd_text -Heading '## What this skill is for'
+    $description = Get-FrontmatterDescription -Text $global:skillmd_text
+
+    It '"What this skill is for" points to the unity-xr-sim skill for headless-free XR simulation' {
+        $section | Should Match 'unity-xr-sim'
+    }
+
+    It 'frontmatter description stays free of XR-simulation phrasing (disjoint trigger surfaces)' {
+        $description | Should Not Match '(?i)unity-xr-sim|openxr|mock runtime|conformance automation|interaction profile|headset'
+    }
+}
