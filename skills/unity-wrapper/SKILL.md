@@ -16,6 +16,11 @@ For git-merging serialized Unity assets (scenes, prefabs, and other YAML asset t
 see the `unity-yaml-merge` skill instead — that is a separate concern from driving the
 live editor.
 
+For exercising VR/XR behaviour headset-free — forcing an OpenXR mock session, moving
+head/controller poses, and driving a virtual grab — see the `unity-xr-sim` skill
+instead; that is a separate, MCP-free-of-its-own concern layered on top of the editor
+this skill drives.
+
 ## Mental model
 
 The Unity MCP has two halves that must both be running for any tool call to succeed:
