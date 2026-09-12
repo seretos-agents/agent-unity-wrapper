@@ -1,0 +1,42 @@
+# Line-ending policy for agent-unity-wrapper (ticket #29).
+#
+# Claude Code silently ignores instruction/skill/settings files checked out
+# with CRLF, and because the committed blobs are LF the damage is invisible to
+# `git status` / `git diff` - only `git update-index --refresh` reveals it.
+#
+# A repo-wide LF default is used instead of an enumerated allowlist so that
+# files added later (e.g. a new .claude/agents/*.md) are covered by
+# construction; an allowlist would re-introduce exactly the bug this file
+# exists to prevent.
+#
+# gitattributes take precedence over core.autocrlf, so this holds on Windows
+# clones and worktrees with core.autocrlf=true. This file is also staged onto
+# the orphan `release` branch by .github/workflows/release.yml, so plugin
+# installs on Windows get an LF SKILL.md too.
+
+# Default: auto-detect text, normalize to LF in the index, check out LF
+# in the working tree on every platform.
+* text=auto eol=lf
+
+# PowerShell is LF-safe here - confirmed, not assumed: the here-string
+# delimiters in scripts/prepare-unity-worktree.ps1 are line-anchored, the
+# Pester suite reads the script via [System.IO.File]::ReadAllLines (which
+# splits on CRLF and LF alike), and the suite passes with LF checkouts.
+# Windows PowerShell 5.1 and PowerShell 7 both parse LF-only script files.
+*.ps1 text eol=lf
+
+# Windows batch files must keep CRLF - cmd.exe mis-parses LF-only labels and
+# goto targets. Defensive: no such files exist today.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary: never EOL-converted, never diffed. assets/icon.png is a release
+# artifact served raw from raw.githubusercontent.com at the release tag, so a
+# rewritten blob would ship a broken marketplace listing image.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.webp binary
+*.zip  binary
