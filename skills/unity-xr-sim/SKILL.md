@@ -301,11 +301,16 @@ capture.
    assembly with no reference to the Features assemblies) or — worse — a runtime
    assembly picks up `autoReferenced: false` assemblies it was never meant to ship.
 4. **Reach internal fields via `SerializedObject`, not direct field access.**
-   `ignoreValidationErrors`, `priority`, `required`, and `openxrExtensionStrings` are
-   internal fields on the feature type — not exposed as public settable properties —
-   so reach them through a `SerializedObject` wrapped around the feature asset and
-   `FindProperty(...)`, never direct field access, which won't compile from outside the
-   declaring assembly.
+   `priority`, `required`, and `openxrExtensionStrings` are internal fields on
+   the feature type — not exposed as public settable properties — so reach
+   them through a `SerializedObject` wrapped around the feature asset and
+   `FindProperty(...)`, never direct field access, which won't compile from
+   outside the declaring assembly (Unity's `InternalsVisibleTo` grant on this
+   assembly never extends to a consumer's own project assembly).
+   `ignoreValidationErrors`
+   is the exception — a public field on `MockRuntime` set by direct assignment,
+   not through `SerializedObject`/`FindProperty` (step 3 already does this:
+   `mockRuntime.ignoreValidationErrors = true;`).
 5. **Mock loader init can trip the MCP `execute_code` timeout.** Calling
    `InitializeLoaderSync()`/`StartSubsystems()` right after entering Play mode (step 4)
    inside `execute_code` can run long enough on a cold editor to trip the tool's own

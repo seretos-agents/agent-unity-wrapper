@@ -511,6 +511,32 @@ Describe 'unity-xr-sim SKILL.md -- numbered Pitfalls region (R2)' {
         $pitfall4 | Should Match 'SerializedObject'
     }
 
+    # ignoreValidationErrors is a PUBLIC field on MockRuntime, set by direct
+    # assignment - as step 3 (line ~134), the Restore prose (line ~210) and
+    # XRSim.cs:172 (`mockRuntime.ignoreValidationErrors = true;`) already do.
+    # Only priority, required, and openxrExtensionStrings are genuinely
+    # internal and need SerializedObject/FindProperty (XRSim.cs:193-194).
+    It 'pitfall 4 classifies ignoreValidationErrors as a public, directly-assigned field' {
+        # Scoped to the first clause boundary of any kind (comma, semicolon, or
+        # period) after the field name, not just a period - and the positive
+        # claims additionally refuse to match through a negation token ("not",
+        # "n't", "never") sitting between the field name and the claim. This
+        # guards against a rewrite that states the OPPOSITE of the truth (e.g.
+        # "ignoreValidationErrors is not public; it is an internal field too,
+        # set that way rather than by direct assignment.") - unscoped/period-only
+        # matching would let that prose satisfy all three assertions too, since
+        # the negation sits between the field name and "public", and "internal
+        # field"/"direct assignment" sit in later, differently-punctuated clauses.
+        $pitfall4 | Should Match '(?i)ignoreValidationErrors(?:(?!\bnot\b|n''t|\bnever\b)[^.,;])*\bpublic\b'
+        $pitfall4 | Should Match '(?i)ignoreValidationErrors(?:(?!\bnot\b|n''t|\bnever\b)[^.,;])*direct assignment'
+        $pitfall4 | Should Not Match '(?i)ignoreValidationErrors[^.,;]*internal field'
+    }
+
+    It 'XRSim.cs assigns ignoreValidationErrors directly and never via FindProperty' {
+        $global:xrsim_csText | Should Match 'mockRuntime\.ignoreValidationErrors\s*=\s*true;'
+        $global:xrsim_csText | Should Not Match 'FindProperty\("ignoreValidationErrors"\)'
+    }
+
     $pitfall5 = Get-NumberedRegion -Text $global:xrsim_text -Heading '## Pitfalls' -Number 5 -NextNumber 6
     It 'pitfall 5 covers the execute_code timeout' {
         $pitfall5 | Should Match 'execute_code'
