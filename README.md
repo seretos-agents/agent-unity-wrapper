@@ -9,8 +9,8 @@ This plugin ships **only skill content** — no binaries of its own. It wraps a 
 ## Install
 
 ```
-/plugin marketplace add Seretos/agent-marketplace
-/plugin install agent-unity-wrapper@agent-marketplace
+/plugin marketplace add seretos-agents/modular-software-factory
+/plugin install agent-unity-wrapper@modular-software-factory
 ```
 
 ## What the skills teach

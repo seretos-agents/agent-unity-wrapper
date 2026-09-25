@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Pairs the external Unity MCP server with a skill so Claude can drive the Unity editor - inspecting scenes, GameObjects, and assets - through structured MCP operations instead of guessing project state.",
   "author": { "name": "Arne von Appen" },
-  "repository": "https://github.com/Seretos/agent-unity-wrapper",
+  "repository": "https://github.com/seretos-agents/agent-unity-wrapper",
   "skills": "./skills",
   "interface": {
     "displayName": "Agent Unity Wrapper",
