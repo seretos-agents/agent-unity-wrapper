@@ -201,7 +201,7 @@ def base_env(**overrides):
     defaults = {
         "NAME": "agent-unity-wrapper",
         "DESC": "A pure skill plugin for Unity.",
-        "REPO": "Seretos/agent-unity-wrapper",
+        "REPO": "seretos-agents/agent-unity-wrapper",
         "CATEGORY": "skill",
         "VERSION": "1.0.0",
         "TAG": "agent-unity-wrapper--v1.0.0",
@@ -259,7 +259,7 @@ def test_marketplace_payload_includes_changelog_key_and_full_keyset_when_set():
 
 def test_marketplace_payload_static_fields_and_derived_urls():
     env = base_env(
-        REPO="Seretos/agent-unity-wrapper",
+        REPO="seretos-agents/agent-unity-wrapper",
         TAG="agent-unity-wrapper--v1.0.0",
         CHANGELOG="notes",
     )
@@ -271,11 +271,11 @@ def test_marketplace_payload_static_fields_and_derived_urls():
     assert cp["ref"] == "agent-unity-wrapper--v1.0.0"
     assert (
         cp["icon"]
-        == "https://raw.githubusercontent.com/Seretos/agent-unity-wrapper/agent-unity-wrapper--v1.0.0/assets/icon.png"
+        == "https://raw.githubusercontent.com/seretos-agents/agent-unity-wrapper/agent-unity-wrapper--v1.0.0/assets/icon.png"
     )
     assert (
         cp["description_url"]
-        == "https://raw.githubusercontent.com/Seretos/agent-unity-wrapper/agent-unity-wrapper--v1.0.0/description.md"
+        == "https://raw.githubusercontent.com/seretos-agents/agent-unity-wrapper/agent-unity-wrapper--v1.0.0/description.md"
     )
 
 
@@ -289,13 +289,13 @@ def test_marketplace_payload_maps_each_field_individually():
         NAME="agent-unity-wrapper",
         VERSION="1.2.3",
         CATEGORY="skill",
-        REPO="Seretos/agent-unity-wrapper",
+        REPO="seretos-agents/agent-unity-wrapper",
     )
     result = run_script(MARKETPLACE_PAYLOAD_SCRIPT, env=env)
     assert result.returncode == 0, f"stderr: {result.stderr!r}"
     cp = json.loads(result.stdout)["client_payload"]
     assert cp["name"] == "agent-unity-wrapper"
-    assert cp["repo"] == "Seretos/agent-unity-wrapper"
+    assert cp["repo"] == "seretos-agents/agent-unity-wrapper"
     assert cp["category"] == "skill"
     assert cp["version"] == "1.2.3"
 
