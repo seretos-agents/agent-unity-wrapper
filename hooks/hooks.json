@@ -1,0 +1,17 @@
+{
+  "description": "Adopts a Unity Hub-started (or otherwise externally-started) editor for this checkout before every Unity MCP tool call, by copying its status file into <checkout>/.unity-mcp so the checkout-local status-dir isolation contract picks it up. Harmless, silent no-op on any other project or when nothing needs adopting - Claude Code only, see skills/unity-wrapper/SKILL.md's Unity Hub adoption section for the Codex equivalent (run scripts/unity-mcp-adopt.ps1 by hand).",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__.*unityMCP__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pwsh -NoProfile -File \"${CLAUDE_PLUGIN_ROOT}/scripts/unity-mcp-adopt.ps1\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
